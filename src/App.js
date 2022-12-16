@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import DataContext from "./Context/DataContext";
+import Home from "./Pages/Home";
+import { MantineProvider } from '@mantine/core';
+import Spotlight from "./Components/Spotlight";
+import { Route, Routes } from "react-router-dom";
+import MoviePage from "./Pages/MoviePage";
+import Explore from "./Pages/Explore";
+import { useDocumentTitle, useDocumentVisibility } from "@mantine/hooks";
+
 
 function App() {
+
+  const documentState = useDocumentVisibility();
+  useDocumentTitle(`${documentState === 'visible' ? 'Movies are Lovin you ❤' : 'Movies Want you to come back 😢'} `)
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <DataContext>
+        <Spotlight>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/movie/:id" element={<MoviePage />} />
+            <Route path="/Explore" element={<Explore />} />
+          </Routes>
+          <DataContext />
+        </Spotlight>
+      </DataContext>
+    </MantineProvider>
+
   );
 }
 
